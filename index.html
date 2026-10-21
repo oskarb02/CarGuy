@@ -20,9 +20,9 @@ input,select,textarea{width:100%}label{display:block;margin:8px 0 3px;font-size:
 button{cursor:pointer}button.p{background:var(--ac);color:#111;border-color:var(--ac);font-weight:700}button.d{color:var(--rd)}button.s{min-height:36px;padding:6px 10px;font-size:13px}
 button.on{background:var(--ac);color:#111;border-color:var(--ac)}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-nav button{flex:1;border:0;border-radius:0;background:none;font-size:11px;padding:6px 2px;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
-nav button b{font-size:19px;font-weight:400}nav button.on{color:var(--ac);background:none}
+nav.bn{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.bn button{flex:1;border:0;border-radius:0;background:none;font-size:11px;padding:6px 2px;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.bn button b{font-size:19px;font-weight:400}nav.bn button.on{color:var(--ac);background:none}
 .fab{position:fixed;right:16px;bottom:calc(74px + env(safe-area-inset-bottom,0px));width:54px;height:54px;border-radius:50%;font-size:28px;z-index:6;padding:0}
 .bar{height:8px;background:var(--ac);border-radius:4px}.tag{font-size:11px;border:1px solid var(--ac);color:var(--ac);border-radius:6px;padding:1px 6px}
 .ph{width:100%;height:120px;object-fit:cover;border-radius:8px;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:8px}
@@ -30,6 +30,14 @@ nav button b{font-size:19px;font-weight:400}nav button.on{color:var(--ac);backgr
 #mo>div{background:var(--card);width:100%;max-width:560px;max-height:90%;overflow:auto;border-radius:16px 16px 0 0;padding:16px}
 .login{max-width:360px;margin:12vh auto 0}.err{color:var(--rd);font-size:13px;min-height:18px}
 .empty{text-align:center;color:var(--mu);padding:24px}
+.top{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:12px;padding:6px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{border:0;background:none;padding:0;min-height:44px;font:700 24px "Arial Narrow","Roboto Condensed",sans-serif;letter-spacing:1px}.brand span{color:var(--ac)}
+.tn{display:flex;gap:2px}.tn button{border:0;border-radius:0;background:none;color:var(--mu);padding:8px 10px}.tn button.on{color:var(--tx);box-shadow:inset 0 -2px var(--ac)}.ur{margin-left:auto;display:flex;gap:8px;align-items:center}
+@media(max-width:719px){.tn.full{display:none}.ur .mu{display:none}}
+.hero{position:relative;overflow:hidden;border-radius:16px;background:#0e0f11;color:#f4f4f2;min-height:480px;margin-top:10px;animation:in .6s ease both}
+.hero svg,.hero .hbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.hc{position:relative;z-index:1;padding:28px 22px;max-width:560px}.hc h1{font-size:42px;line-height:1.05}.hc p{color:#d6d8dc;margin:12px 0 18px;font-size:16px}
+.fg{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin:12px 0 0;padding:0;list-style:none}
 .logo{font-size:56px;line-height:1;letter-spacing:1px}.logo span{color:var(--ac)}
 .lead{font-size:17px;margin:8px 0 12px}.feat{list-style:none;padding:0;margin:0 0 16px;color:var(--mu)}.feat li{padding:4px 0 4px 18px;position:relative}.feat li:before{content:"";position:absolute;left:0;top:.9em;width:8px;height:3px;background:var(--ac)}
 .login{animation:in .5s ease both}@keyframes in{from{opacity:0;transform:translateY(8px)}}
@@ -40,10 +48,11 @@ input,select,textarea{font-size:16px}
 img.ph{height:auto;max-height:320px;display:block}#pc{cursor:grab;display:block}
 @media(max-width:380px){h1{font-size:26px}.logo{font-size:46px}.g2{gap:6px}.big{font-size:23px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body><main id="app"></main><div id="mo"></div>
+</style></head><body><header id="hd" class="top"></header><main id="app"></main><div id="mo"></div>
 <script>
 const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const USERS={admin:{p:'admin1',role:'admin',name:'Administrator'},uzytkownik:{p:'uzytkownik1',role:'user',name:'Użytkownik'}};
+const USERS={admin:{h:'7098476b2d5af8f22abe5eeef8a4e29c297ff0650d42aee55ca230a030ca066f',role:'admin',name:'Administrator'},uzytkownik:{h:'37c04db16466001d2d5c5d557e6b8b72eac58077efe5add582eb4d63085b51a9',role:'user',name:'Użytkownik'}};
+const sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const CATS=['serwis','części','paliwo','ubezpieczenie','tuning','detailing','opony','zakup auta','inne'];
 const SPOTC=['spot samochodowy','miejsce foto','punkt widokowy','tor','drift','karting','trasa','garaż społecznościowy'];
 const NEAR=['mechanik','detailing','wulkanizacja','lakiernik','blacharz','myjnia samochodowa','warsztat tuningowy','sklep motoryzacyjny','stacja kontroli pojazdów','parking','stacja paliw','ładowarka EV','tor wyścigowy','karting'];
@@ -94,11 +103,20 @@ const carN=id=>{const c=S.cars.find(x=>x.id===id);return c?c.brand+' '+c.model:'
 function inP(d,p){const n=new Date(),x=new Date(d);if(p==='all')return true;if(p==='year')return x.getFullYear()===n.getFullYear();if(p==='month')return x.getFullYear()===n.getFullYear()&&x.getMonth()===n.getMonth();return(n-x)/864e5<7&&x<=n}
 const sum=a=>a.reduce((s,e)=>s+ +e.amt,0);
 // ---- views
-function login(){$('#app').innerHTML=`<div class="login"><h1 class="logo">CAR<span>GUY</span></h1><p class="lead">Twój garaż w kieszeni: ile kosztuje każde auto, gdzie jest dobry warsztat i dokąd pojechać na spot.</p><ul class="feat"><li>Garaż i wydatki z podsumowaniami</li><li>Spoty i wyszukiwanie firm w okolicy</li><li>Nawigacja w Google Maps lub Apple Maps</li></ul><form onsubmit="return false"><label>Login</label><input id="lu" autocomplete="username" autocapitalize="none"><label>Hasło</label><input id="lp" type="password" autocomplete="current-password"><div class="err" id="le"></div><button class="p" style="width:100%" id="lb">Zaloguj</button></form><p class="mu">Prototyp: konta demo (admin / admin1, uzytkownik / uzytkownik1) są sprawdzane w przeglądarce. To nie jest zabezpieczenie — publiczna wersja wymaga logowania i kontroli dostępu po stronie serwera.</p></div>`;
- $('#lb').onclick=()=>{const u=$('#lu').value.trim().toLowerCase(),p=$('#lp').value;if(USERS[u]&&USERS[u].p===p){U=u;ST.set('cg_session',u);load();V='home';render()}else $('#le').textContent='Nieprawidłowy login lub hasło.'}}
-function render(){if(!U)return login();const tabs=[['home','🏠','Home'],['spots','📍','Spoty'],['near','🔎','Okolica'],['calc','💳','Wydatki'],['garage','🚗','Garaż'],['more','☰','Więcej']];
- const main=['home','spots','near','calc','garage'].includes(V)?V:'more';
- $('#app').innerHTML=(VIEWS[V]||VIEWS.home)()+`<nav aria-label="Główna nawigacja">${tabs.map(t=>`<button class="${t[0]===main?'on':''}" onclick="V='${t[0]}';cur=null;render();scrollTo(0,0)"><b>${t[1]}</b>${t[2]}</button>`).join('')}</nav><button class="p fab" onclick="quickAdd()" aria-label="Dodaj">+</button>`}
+const PRIV=['home','garage','calc','spots','near','more','events','saved','settings','admin'];
+function goto(v){V=v;cur=null;render();scrollTo(0,0)}
+function logout(){U=null;ST.set('cg_session',null);V='home';render();scrollTo(0,0)}
+function head(){const top=U?[['home','Home'],['garage','Garaż'],['calc','Wydatki'],['spots','Spoty'],['near','Okolica'],['more','Więcej']]:[['home','Home']],m=['home','spots','near','calc','garage'].includes(V)?V:'more';
+return`<button class="brand" onclick="goto('home')" aria-label="CarGuy — Home">CAR<span>GUY</span></button><nav class="tn ${U?'full':''}" aria-label="Menu główne">${top.map(t=>`<button class="${t[0]===m&&V!=='login'?'on':''}"${t[0]===m&&V!=='login'?' aria-current="page"':''} onclick="goto('${t[0]}')">${t[1]}</button>`).join('')}</nav><div class="ur">${U?`<span class="mu">${E(S.prefs.name)}</span><button class="s" onclick="logout()">Wyloguj się</button>`:V==='login'?'':`<button class="p s" onclick="goto('login')">Zaloguj się</button>`}</div>`}
+function pubHome(){return`<section class="hero" aria-labelledby="ht"><svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path d="M170 400 C190 360 250 340 320 332 L410 290 C460 270 550 270 600 292 L680 328 C730 336 770 360 780 400 L780 415 L170 415Z" fill="#1c1e23" stroke="#ff6a1a" stroke-width="3"/><path d="M430 296 L490 278 C530 274 570 282 590 298 L550 322 L420 322Z" fill="#0e0f11"/><circle cx="290" cy="415" r="36" fill="#0e0f11" stroke="#ff6a1a" stroke-width="3"/><circle cx="670" cy="415" r="36" fill="#0e0f11" stroke="#ff6a1a" stroke-width="3"/></svg><img class="hbg" src="img/hero.jpg" alt="Sportowy samochód" onerror="this.remove()"><div class="hc"><h1 id="ht">Twój garaż, koszty i spoty w jednym miejscu</h1><p>CarGuy jest dla ludzi, którzy żyją motoryzacją. Policz, ile naprawdę kosztuje Twoje auto, zapisuj serwis i tuning, znajdź warsztat w okolicy i ruszaj w drogę ulubioną nawigacją.</p><button class="p" onclick="goto('login')">Zaloguj się</button></div></section><ul class="fg"><li class="card"><h3>Garaż i koszty</h3><div class="mu">Wiele aut, wydatki, podsumowania i koszt posiadania.</div></li><li class="card"><h3>Spoty i okolica</h3><div class="mu">Własne miejsca oraz szukanie warsztatów i firm w pobliżu.</div></li><li class="card"><h3>Nawigacja</h3><div class="mu">Jedno kliknięcie w Google Maps lub Apple Maps.</div></li></ul>`}
+function loginView(){return`<div class="login"><button class="s" onclick="goto('home')">← Wróć do Home</button><h1 style="margin-top:12px">Zaloguj się</h1><form id="lf" novalidate><label for="lu">Login</label><input id="lu" autocomplete="username" autocapitalize="none"><label for="lp">Hasło</label><div class="row" style="flex-wrap:nowrap"><input id="lp" type="password" autocomplete="current-password"><button type="button" class="s" id="lt" aria-pressed="false">Pokaż</button></div><div class="err" id="le" role="alert"></div><button class="p" style="width:100%">Zaloguj się</button></form><p class="mu">To prototyp: login i hasło są sprawdzane w przeglądarce, więc nie chronią danych. Prawdziwe zabezpieczenie wymaga serwera.</p></div>`}
+function bindLogin(){const pw=$('#lp'),t=$('#lt');$('#lu').focus();t.onclick=()=>{const o=pw.type==='password';pw.type=o?'text':'password';t.textContent=o?'Ukryj':'Pokaż';t.setAttribute('aria-pressed',o)};
+$('#lf').onsubmit=async e=>{e.preventDefault();const u=$('#lu').value.trim().toLowerCase(),p=pw.value,er=$('#le');if(!u||!p){er.textContent='Wpisz login i hasło.';return}if(!(window.crypto&&crypto.subtle)){er.textContent='Logowanie wymaga bezpiecznego połączenia (HTTPS).';return}const h=await sha('carguy|'+u+'|'+p);if(USERS[u]&&USERS[u].h===h){U=u;ST.set('cg_session',u);load();V='home';render();scrollTo(0,0)}else{er.textContent='Nieprawidłowy login lub hasło.';pw.value='';pw.focus()}}}
+function render(){if(!U&&V!=='login')V='home';if(U&&!PRIV.includes(V))V='home';$('#hd').innerHTML=head();
+if(!U){history.replaceState(null,'',location.pathname+location.search);$('#app').innerHTML=V==='login'?loginView():pubHome();if(V==='login')bindLogin();return}
+if(location.hash!=='#'+V)history.replaceState(null,'','#'+V);
+const tabs=[['home','🏠','Home'],['spots','📍','Spoty'],['near','🔎','Okolica'],['calc','💳','Wydatki'],['garage','🚗','Garaż'],['more','☰','Więcej']],main=['home','spots','near','calc','garage'].includes(V)?V:'more';
+$('#app').innerHTML=(VIEWS[V]||VIEWS.home)()+`<nav class="bn" aria-label="Główna nawigacja">${tabs.map(t=>`<button class="${t[0]===main?'on':''}" onclick="goto('${t[0]}')"><b>${t[1]}</b>${t[2]}</button>`).join('')}</nav><button class="p fab" onclick="quickAdd()" aria-label="Dodaj">+</button>`}
 function quickAdd(){modal(`<h2>Dodaj</h2><div class="g2"><button onclick="addExp()">Wydatek</button><button onclick="addCar()">Samochód</button><button onclick="addSpot()">Spot / miejsce</button><button onclick="addEv()">Wydarzenie</button></div>`)}
 const VIEWS={
 home(){const m=S.exp.filter(e=>inP(e.date,'month')),last=[...S.exp].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4),lc=S.cars[S.cars.length-1],ev=[...S.events].filter(e=>e.date>=today()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
@@ -150,5 +168,6 @@ function nearGo(){const c=$('#nc').value,w=$('#nw').value.trim();if(!w)return to
 function nearGeo(){if(!navigator.geolocation)return toast('Brak obsługi lokalizacji');navigator.geolocation.getCurrentPosition(p=>{const c=$('#nc').value,l=p.coords.latitude+','+p.coords.longitude;window.open(S.prefs.nav==='apple'?`https://maps.apple.com/?q=${encodeURIComponent(c)}&sll=${l}`:`https://www.google.com/maps/search/${encodeURIComponent(c)}/@${l},13z`,'_blank','noopener')},()=>toast('Brak zgody na lokalizację — wpisz miasto ręcznie'))}
 function csv(){const r=[['data','auto','co','kategoria','kwota','przebieg','notatka'],...S.exp.map(e=>[e.date,carN(e.car),e.what,e.cat,e.amt,e.km||'',e.note||''])];const t=r.map(x=>x.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv'}));a.download='wydatki.csv';a.click()}
 document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t.matches&&t.matches('[role=button]')){e.preventDefault();t.click()}});
-U=ST.get('cg_session',null);if(U&&!USERS[U])U=null;if(U)load();render();
+U=ST.get('cg_session',null);if(U&&!USERS[U])U=null;if(U)load();{const h=location.hash.slice(1);if(U&&PRIV.includes(h))V=h}
+window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(U&&PRIV.includes(v)&&v!==V){V=v;cur=null;render()}});render();
 </script></body></html>
